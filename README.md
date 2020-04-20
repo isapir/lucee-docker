@@ -83,6 +83,7 @@ The following example will launch a container with the name "lucee-8080", set th
 
     docker container run  \
         -p 8080:8080      \
-        --name lucee-8080 \
         -e LUCEE_PRESERVE_CASE=true \
-        isapir/lucee-537
+        -v /workspace/src/lucee-docker-test:/srv/www/webapps/ROOT \
+        --name lucee-8080 \
+            isapir/lucee-537
