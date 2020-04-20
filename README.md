@@ -49,8 +49,7 @@ from Lucee 5.3.7.0-SNAPSHOT, set the Admin password to "changeit", and add the W
 
 ### Push
 
-Once you've built the image you can push it to your Docker Hub account (or other repository that you might use) with the
-command `docker push <tag-name>`, e.g.:
+Once you've built the image you can push it to your Docker Hub account (or other repository that you might use).  That is very useful if you want to be able to pull the image from any host machine without having to build it each time.  The command is `docker push <tag-name>`.  , e.g.:
 
     docker push isapir/lucee-537
 
