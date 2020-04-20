@@ -5,7 +5,7 @@
 The minimum you have to do in order to build a Docker image is to switch to the project directory and run the following
 command (where `.` means the current directory):
 
-    docker build image .
+    docker image build .
     
 It is often useful to tag the image so that you can refer to it later by name rather than a hash.  To do that, pass
 the argument `-t <tag-name>`
@@ -41,7 +41,7 @@ The following command should be on one line.  It is broken here to multiple line
 escape character (the equivalent escape character on Windows is the `^` character).  This example will build an image
 from Lucee 5.3.7.0-SNAPSHOT, set the Admin password to "changeit", and add the WebSocket extension:
 
-    docker build image .    \
+    docker image build .    \
         -t isapir/lucee-537 \
         --build-arg LUCEE_ADMIN_PASSWORD=changeit  \
         --build-arg LUCEE_VERSION=5.3.7.0-SNAPSHOT \
