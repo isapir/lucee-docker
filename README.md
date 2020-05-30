@@ -23,23 +23,17 @@ This must be a full version number, including the modifier if one exist, e.g. `5
 
 ### LUCEE_EXTENSIONS
 
-This argument will download the specified extensions at build time so that you don't have to wait for them when running
-the container.  The value is a comma separated list where each element is a semi-colon separated list that starts with 
-the extension unique identifier, followed by optional name, label, and version (if not specified then the most recent 
-version will be used).
+This argument will download the specified extensions at build time so that you don't have to wait for them when running the container.  The value is a comma separated list where each element is a semi-colon separated list that starts with the extension unique identifier, followed by optional name, label, and version (if not specified then the most recent version of the extension will be used).
 
 ### Adding Files to the Image
 
-You can add custom files, including your application code, by saving them to the projects `res/catalina-base` directory.  
+You can add your application code to the `app` directory.  All of the files in that directory are for the sake of example only and can be safely deleted.
 
-If you only want to add Application code, then save it to `res/catalina-base/webapps/ROOT`.  If you want to add other
-settings add them to the corresponding files per the Tomcat documentation.
+You can add custom files, e.g. Java JAR files, by saving them to the `res/catalina-base` directory in the appropriate subdirectory per the Apache Tomcat documentation, e.g. JAR files would go in `res/catalina-base/lib`.
 
 ### Putting it all together to build a custom image
 
-The following command should be on one line.  It is broken here to multiple lines for readability, using the *nix `\` 
-escape character (the equivalent escape character on Windows is the `^` character).  This example will build an image
-from Lucee 5.3.7.0-SNAPSHOT, set the Admin password to "changeit", and add the WebSocket extension:
+The following command should be on one line.  It is broken here to multiple lines for readability, using the *nix `\` escape character (the equivalent escape character on Windows is the `^` character).  This example will build an image from Lucee 5.3.7.0-SNAPSHOT, set the Admin password to "changeit", and add the WebSocket extension:
 
     docker image build .    \
         -t isapir/lucee-537 \
@@ -74,7 +68,7 @@ Please note that the image name has to be the last argument, so all switches mus
 
 A very useful option, especially when developing or testing code, is to map a directory from the Host machine to the container.  Mapping a directory is done using the `-v <directory-on-host>:<directory-in-container>` switch.
 
-If you want to use the settings from the image, and only map the application code to the container, then map it to `/srv/www/webapps/ROOT`.  For example, if you application code on the host machine is at `C:\www` then you can map it with `v C:\www:/srv/www/webapps/ROOT`.
+If you want to use the settings from the image, and only map the application code to the container, then map it to `/srv/www/webapps/ROOT`.  For example, if you application code on the host machine is at `C:\www` then you can map it with `-v C:\www:/srv/www/webapps/ROOT`.
 
 If you want to map a Catalina Base directory structure which can set options to Tomcat and the JVM, you can map it to `/srv/www` in the container.  Just be sure to have a subdirectory at `webapps/ROOT` with your application code.
 
