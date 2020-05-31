@@ -7,11 +7,9 @@ command (where `.` means the current directory):
 
     docker image build .
     
-It is often useful to tag the image so that you can refer to it later by name rather than a hash.  To do that, pass
-the argument `-t <tag-name>`
+It is often useful to tag the image so that you can refer to it later by name rather than a hash.  To do that, pass the argument `-t <tag-name>`
 
-Other useful arguments that the Dockerfile can be passed by using the `--build-arg` switch to set Environment variables 
-to the build process:
+Other useful arguments that the Dockerfile can be passed by using the `--build-arg` switch to set Environment variables to the build process:
 
 ### LUCEE_ADMIN_PASSWORD
 
@@ -19,7 +17,7 @@ This will set the Lucee Admin password to the value passed
 
 ### LUCEE_VERSION
 
-This must be a full version number, including the modifier if one exist, e.g. `5.3.7.0-SNAPSHOT`
+This must be a full version number, including the modifier suffix if one exist, e.g. `-SNAPSHOT`, `-BETA`, `-RC`, etc.  You can see the available versions on the [Lucee Download page](https://download.lucee.org/).
 
 ### LUCEE_EXTENSIONS
 
@@ -29,36 +27,33 @@ This argument will download the specified extensions at build time so that you d
 
 You can add your application code to the `app` directory.  All of the files in that directory are for the sake of example only and can be safely deleted.
 
-You can add custom files, e.g. Java JAR files, by saving them to the `res/catalina-base` directory in the appropriate subdirectory per the Apache Tomcat documentation, e.g. JAR files would go in `res/catalina-base/lib`.
+You can add custom files, e.g. Java JAR files, by saving them to the `res/catalina-base` directory in the appropriate subdirectory per the [Apache Tomcat documentation](https://tomcat.apache.org/tomcat-9.0-doc/index.html), e.g. JAR files would go in `res/catalina-base/lib`.
 
 ### Putting it all together to build a custom image
 
-The following command should be on one line.  It is broken here to multiple lines for readability, using the *nix `\` escape character (the equivalent escape character on Windows is the `^` character).  This example will build an image from Lucee 5.3.7.0-SNAPSHOT, set the Admin password to "changeit", and add the WebSocket extension:
+The following command should be on one line.  It is broken here to multiple lines for readability, using the *nix `\` escape character (the equivalent escape character on Windows is the `^` character).  This example will build an image from Lucee 5.3.7.34-RC, set the Admin password to "changeit", and add the WebSocket extension:
 
     docker image build .    \
-        -t isapir/lucee-537 \
+        -t isapir/lucee-537-rc \
         --build-arg LUCEE_ADMIN_PASSWORD=changeit  \
-        --build-arg LUCEE_VERSION=5.3.7.0-SNAPSHOT \
+        --build-arg LUCEE_VERSION=5.3.7.34-RC \
         --build-arg LUCEE_EXTENSIONS="3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket"
 
 ### Push
 
 Once you've built the image you can push it to your Docker Hub account (or other repository that you might use).  That is very useful if you want to be able to pull the image from any host machine without having to build it each time.  The command is `docker push <tag-name>`.  , e.g.:
 
-    docker push isapir/lucee-537
+    docker push isapir/lucee-537-rc
 
 ## Run
 
-Once the image is built, or is on Docker Hub, you can run it using the `docker run` command.  At the very least, you will
-probably want to map some TCP port on the Host machine to port 8080 of the container using the argument `-p <host-port>:8080`.
+Once the image is built, or is on Docker Hub, you can run it using the `docker run` command.  At the very least, you will probably want to map some TCP port on the Host machine to port 8080 of the container using the argument `-p <host-port>:8080`.
 
-Another useful option is to give the container a name so that you can refer to it by name rather than by a random hash.  That
-is done using the `--name <container-name` switch.
+Another useful option is to give the container a name so that you can refer to it by name rather than by a random hash.  That is done using the `--name <container-name` switch.
 
-The following command would launch a container from the image tagged `isapir/lucee-537`, name it `lucee-8080`, and map port
-8080 of the Host to port 8080 of the container:
+The following command would launch a container from the image tagged `isapir/lucee-537-rc`, name it `lucee-8080`, and map port 8080 of the Host to port 8080 of the container:
 
-    docker container run -p 8080:8080 --name lucee-8080 isapir/lucee-537
+    docker container run -p 8080:8080 --name lucee-8080 isapir/lucee-537-rc
 
 You can also pass Environment variables to the container using the `-e` switch, for example `-e LUCEE_PRESERVE_CASE=true` will preserve the CaSe of variables and unquoted struct keys.  You can similarly pass other options to Lucee.
 
@@ -79,4 +74,4 @@ The following example will launch a container with the name "lucee-8080", set th
         -e LUCEE_PRESERVE_CASE=true \
         -v /workspace/src/lucee-docker-test:/srv/www/webapps/ROOT \
         --name lucee-8080 \
-            isapir/lucee-537
+            isapir/lucee-537-rc
