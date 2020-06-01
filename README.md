@@ -33,10 +33,10 @@ You can add custom files, e.g. Java JAR files, by saving them to the `res/catali
 
 The following command should be on one line.  It is broken here to multiple lines for readability, using the *nix `\` escape character (the equivalent escape character on Windows is the `^` character).  This example will build an image from Lucee 5.3.7.34-RC, set the Admin password to "changeit", and add the WebSocket extension:
 
-    docker image build .    \
+    docker image build .       \
         -t isapir/lucee-537-rc \
-        --build-arg LUCEE_ADMIN_PASSWORD=changeit  \
-        --build-arg LUCEE_VERSION=5.3.7.34-RC \
+        --build-arg LUCEE_ADMIN_PASSWORD=changeit \
+        --build-arg LUCEE_VERSION=5.3.7.34-RC     \
         --build-arg LUCEE_EXTENSIONS="3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket"
 
 ### Push
@@ -69,8 +69,8 @@ If you want to map a Catalina Base directory structure which can set options to 
 
 The following example will launch a container with the name "lucee-8080", set the LUCEE_PRESERVE_CASE option, map port 8080 from the host, and map the directory `/workspace/src/lucee-docker-test` to the container's `/srv/www/webapps/ROOT` directory.  As in the build example, the `\` escape character are used in order to break the command into multiple lines so that it's more readable, but in general the whole command should be on one line: 
 
-    docker container run  \
-        -p 8080:8080      \
+    docker container run            \
+        -p 8080:8080                \
         -e LUCEE_PRESERVE_CASE=true \
         -v /workspace/src/lucee-docker-test:/srv/www/webapps/ROOT \
         --name lucee-8080 \
