@@ -159,7 +159,9 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log" suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+               pattern="%{yyyy-MM-dd'T'HH:mm:ssZ}t %s %a %r %{Referer}i &quot;%{User-Agent}i&quot; %I %T %{X-Original-URI}i %{cfid}c %{X-Request-ID}i"
+               requestAttributesEnabled="true"
+        />
 
       </Host>
     </Engine>
