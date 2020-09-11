@@ -86,6 +86,35 @@
   <url-pattern>/rest/*</url-pattern>
 </servlet-mapping>
 
+<filter>
+  <filter-name>RemoteIpFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.RemoteIpFilter</filter-class>
+  <!--
+  <init-param>
+    <param-name>internalProxies</param-name>
+    <param-value>127\.0\.0\.1</param-value>
+  </init-param>
+  !-->
+  <init-param>
+    <param-name>remoteIpHeader</param-name>
+    <param-value>x-forwarded-for</param-value>
+  </init-param>
+  <init-param>
+    <param-name>remoteIpProxiesHeader</param-name>
+    <param-value>x-forwarded-by</param-value>
+  </init-param>
+  <init-param>
+    <param-name>protocolHeader</param-name>
+    <param-value>x-forwarded-proto</param-value>
+  </init-param>
+</filter>
+
+<filter-mapping>
+  <filter-name>RemoteIpFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+  <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+
 
   <!-- ================== Built In Servlet Definitions ==================== -->
 
