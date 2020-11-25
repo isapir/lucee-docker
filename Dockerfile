@@ -38,7 +38,11 @@ ENV CATALINA_BASE /srv/www
 ENV CATALINA_HOME /usr/local/tomcat
 ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 
+# Lucee server directory
+ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
+
 RUN cat /etc/os-release \
+    && echo LUCEE_SERVER=${LUCEE_SERVER} \
     && echo Downloading Lucee ${LUCEE_VERSION}... \
     && $CATALINA_HOME/bin/makebase.sh $CATALINA_BASE \
     && curl -L -o "${CATALINA_BASE}/lib/${LUCEE_VERSION}.jar" "${LUCEE_DOWNLOAD}${LUCEE_VERSION}"
@@ -46,17 +50,22 @@ RUN cat /etc/os-release \
 # copy the files from resources/catalina_base to the image
 COPY resources/catalina-base ${CATALINA_BASE}
 
+# copy custom Lucee server files, e.g. extensions from resources/lucee-server/deploy 
+COPY resources/lucee-server ${LUCEE_SERVER}
+
 # copy the files from app to the image
 COPY app ${CATALINA_BASE}/webapps/ROOT
 
+# create password.txt file if password is set
 ARG LUCEE_ADMIN_PASSWORD=
 ENV LUCEE_ADMIN_PASSWORD=${LUCEE_ADMIN_PASSWORD}
 
 RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
-        mkdir -p "${CATALINA_BASE}/lucee-server/context" \ 
-        && echo $LUCEE_ADMIN_PASSWORD > "${CATALINA_BASE}/lucee-server/context/password.txt" ; \
+        mkdir -p "${LUCEE_SERVER}/context" \ 
+        && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER}/context/password.txt" ; \
     fi
 
+# remove admin password from ENV
 ENV LUCEE_ADMIN_PASSWORD=
 
 RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] ; then \
