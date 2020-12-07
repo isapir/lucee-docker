@@ -1,0 +1,33 @@
+### Example Kubernetes Deployment and Service
+##  Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lucee-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lucee-app
+  template:
+    metadata:
+      name: lucee-app
+      labels:
+        app: lucee-app
+    spec:
+      containers:
+      - image: isapir/lucee-538-pgjdbc
+        name: lucee-app
+---
+##  Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: lucee-svc
+spec:
+  selector:
+    app: lucee-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

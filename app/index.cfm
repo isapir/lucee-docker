@@ -15,9 +15,16 @@
 			.path        { font-family: monospace; }
 			.cont-path   { background: aqua; }
 			.host-path   { background: lawngreen; }
+			table        { border: 1px solid gray; }
+			tr td        { border: 1px solid lightgray; }
 		</style>		
 	</head>
 	<body>
+
+<cfset serverTime = "#listGetAt(now(), 2, "'")# #getTimezoneInfo().shortName#">
+
+<cfheader name="X-Host" value="#CGI.LOCAL_HOST#">
+<cfheader name="X-Time" value="#serverTime#">
 
 <div id="page">
 
@@ -29,9 +36,29 @@
 	</h1>
 
 	<ul>
-		<p>This is the default CFML script that comes with the <a href="https://github.com/isapir/lucee-docker" target="_blank">lucee-docker</a> project.  You can see the source code of the script in the project's directory at <a href="https://github.com/isapir/lucee-docker/blob/master/app/index.cfm" target="_blank"><span class="path host-path">app/index.cfm</span></a>, and it is copied into the container at <span class="path cont-path">#getCurrentTemplatePath()#</span>.</p>
+		<p>This is the default CFML script that comes with the <a href="https://github.com/isapir/lucee-docker" target="_blank">lucee-docker</a> project.  
+			You can see the source code of the script in the project's directory at 
+			<a href="https://github.com/isapir/lucee-docker/blob/master/app/index.cfm" target="_blank"><span class="path host-path">app/index.cfm</span></a>, 
+			and it is copied into the container at <span class="path cont-path">#getCurrentTemplatePath()#</span>.</p>
 			
-		<p>The page was generated at #listGetAt(now(), 2, "'")# #getTimezoneInfo().shortName#.</p>
+		<table>
+			<tr>
+				<td>Server Time</td>
+				<td>#serverTime#</td>
+			</tr>
+			<tr>
+				<td>LOCAL_HOST</td>
+				<td>#CGI.LOCAL_HOST#</td>
+			</tr>
+			<tr>
+				<td>LOCAL_ADDR</td>
+				<td>#CGI.LOCAL_ADDR#</td>
+			</tr>
+			<tr>
+				<td>REMOTE_ADDR</td>
+				<td>#CGI.REMOTE_ADDR#</td>
+			</tr>
+		</table>
 
 		<p>To run your own code, you can do one of the following:</p>
 
