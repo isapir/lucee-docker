@@ -1,1 +1,1 @@
-Local Lucee extensions can be placed here for deployment on warmup
+Lucee extensions (.lex archives) can be placed in this directory for deployment during warmup

@@ -23,6 +23,10 @@ This must be a full version number, including the modifier suffix if one exist, 
 
 This argument will download the specified extensions at build time so that you don't have to wait for them when running the container.  The value is a comma separated list where each element is a semi-colon separated list that starts with the extension unique identifier, followed by optional name, label, and version (if not specified then the most recent version of the extension will be used).
 
+### CATALINA_OPTS
+
+Use CATALINA_OPTS to set Java options and system properties. 
+
 ### Adding Files to the Image
 
 You can add your application code to the `app` directory.  All of the files in that directory are for the sake of example only and can be safely deleted.

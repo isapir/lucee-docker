@@ -32,6 +32,9 @@ ENV LUCEE_VERSION=${LUCEE_VERSION}
 ARG LUCEE_EXTENSIONS=
 ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 
+ARG CATALINA_OPTS=
+ENV CATALINA_OPTS ${CATALINA_OPTS}
+
 # Map a host directory for web root with
 #   -v <host-web-app-directory>:/srv/www/webapps/ROOT
 ENV CATALINA_BASE /srv/www
@@ -67,6 +70,8 @@ RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
 
 # remove admin password from ENV
 ENV LUCEE_ADMIN_PASSWORD=
+
+WORKDIR ${CATALINA_BASE}
 
 RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
