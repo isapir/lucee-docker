@@ -4,12 +4,12 @@
 #  if passing LUCEE_EXTENSIONS, the value has to be in double quotes
 #
 #  docker image build \
-#    --build-arg LUCEE_VERSION=5.3.7.34-RC \
+#    --build-arg LUCEE_VERSION=5.3.8.129-SNAPSHOT \
 #    --build-arg LUCEE_ADMIN_PASSWORD=changeit \
 #    --build-arg LUCEE_EXTENSIONS="3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket" \
-#    -t isapir/lucee-537 .
+#    -t isapir/lucee-538 .
 #
-#  docker push isapir/lucee-537
+#  docker push isapir/lucee-538
 
 ## RUN:
 #
@@ -18,13 +18,13 @@
 #  docker container run -d --rm -p 8080:8080 --name lucee-8080 \
 #    -v $WEBROOT:/srv/www/webapps/ROOT \
 #    -e LUCEE_PRESERVE_CASE=true \
-#    isapir/lucee-537
+#    isapir/lucee-538
 
 FROM tomcat:9-jdk11
 
 # Set default LUCEE_VERSION
 #   Override at build time with --build-arg LUCEE_VERSION=5.2.9.38-SNAPSHOT
-ARG LUCEE_VERSION=5.3.6.61
+ARG LUCEE_VERSION=5.3.7.47
 ENV LUCEE_VERSION=${LUCEE_VERSION}
 
 # Install optional Lucee extensions in the comma separated format {extension-id};name=X;label=XY;version=m.n
