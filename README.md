@@ -19,6 +19,8 @@ This will set the Lucee Admin password to the value passed
 
 This must be a full version number, including the modifier suffix if one exist, e.g. `-SNAPSHOT`, `-BETA`, `-RC`, etc.  You can see the available versions on the [Lucee Download page](https://download.lucee.org/).
 
+You may also build a CUSTOM version by setting the LUCEE_VERSION environment variablet to "CUSTOM" and placing a Lucee JAR file in the `resources/catalina-base/lib/` directory.
+
 ### LUCEE_EXTENSIONS
 
 This argument will download the specified extensions at build time so that you don't have to wait for them when running the container.  The value is a comma separated list where each element is a semi-colon separated list that starts with the extension unique identifier, followed by optional name, label, and version (if not specified then the most recent version of the extension will be used).
