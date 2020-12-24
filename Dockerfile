@@ -49,8 +49,8 @@ ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
 RUN cat /etc/os-release \
     && echo LUCEE_SERVER=${LUCEE_SERVER} \
     && $CATALINA_HOME/bin/makebase.sh $CATALINA_BASE \
-    && if [ "$LUCEE_VERSION" != "CUSTOM" ] ; \
-            then echo Downloading Lucee ${LUCEE_VERSION}... \
+    &&  if [ "$LUCEE_VERSION" != "CUSTOM" ] ; then \
+            echo Downloading Lucee ${LUCEE_VERSION}... \
             && curl -L -o "${CATALINA_BASE}/lib/${LUCEE_VERSION}.jar" "${LUCEE_DOWNLOAD}${LUCEE_VERSION}" ; \
         fi
 
