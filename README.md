@@ -19,7 +19,7 @@ This will set the Lucee Admin password to the value passed
 
 This must be a full version number, including the modifier suffix if one exist, e.g. `-SNAPSHOT`, `-BETA`, `-RC`, etc.  You can see the available versions on the [Lucee Download page](https://download.lucee.org/).
 
-You may also build a CUSTOM version by setting the LUCEE_VERSION environment variablet to "CUSTOM" and placing a Lucee JAR file in the `resources/catalina-base/lib/` directory.
+You may also build a CUSTOM version by setting the LUCEE_VERSION environment variable to "CUSTOM" and placing a Lucee JAR file in the `resources/catalina-base/lib/` directory.
 
 ### LUCEE_EXTENSIONS
 
