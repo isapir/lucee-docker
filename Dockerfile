@@ -44,11 +44,15 @@ ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 # Lucee server directory
 ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
 
+# displays the OS version and Lucee Server path
+# calls makebase.sh and downloads Lucee if the version is not set to CUSTOM 
 RUN cat /etc/os-release \
     && echo LUCEE_SERVER=${LUCEE_SERVER} \
-    && echo Downloading Lucee ${LUCEE_VERSION}... \
     && $CATALINA_HOME/bin/makebase.sh $CATALINA_BASE \
-    && curl -L -o "${CATALINA_BASE}/lib/${LUCEE_VERSION}.jar" "${LUCEE_DOWNLOAD}${LUCEE_VERSION}"
+    && if [ "$LUCEE_VERSION" != "CUSTOM" ] ; \
+            then echo Downloading Lucee ${LUCEE_VERSION}... \
+            && curl -L -o "${CATALINA_BASE}/lib/${LUCEE_VERSION}.jar" "${LUCEE_DOWNLOAD}${LUCEE_VERSION}" ; \
+        fi
 
 # copy the files from resources/catalina_base to the image
 COPY resources/catalina-base ${CATALINA_BASE}
@@ -73,7 +77,7 @@ ENV LUCEE_ADMIN_PASSWORD=
 
 WORKDIR ${CATALINA_BASE}
 
-RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] ; then \
+RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
         && export LUCEE_ENABLE_WARMUP=true \
         && export LUCEE_EXTENSIONS \

@@ -25,6 +25,7 @@
 
 <cfheader name="X-Host" value="#CGI.LOCAL_HOST#">
 <cfheader name="X-Time" value="#serverTime#">
+<cfheader name="X-Lucee-Version" value="#Server.lucee.version#">
 
 <div id="page">
 
