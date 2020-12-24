@@ -33,7 +33,7 @@ Use CATALINA_OPTS to set Java options and system properties.
 
 You can add your application code to the `app` directory.  All of the files in that directory are for the sake of example only and can be safely deleted.
 
-You can add custom files, e.g. Java JAR files, by saving them to the `res/catalina-base` directory in the appropriate subdirectory per the [Apache Tomcat documentation](https://tomcat.apache.org/tomcat-9.0-doc/index.html), e.g. JAR files would go in `res/catalina-base/lib`.
+You can add custom files, e.g. Java JAR files, by saving them to the `resources/catalina-base` directory in the appropriate subdirectory per the [Apache Tomcat documentation](https://tomcat.apache.org/tomcat-9.0-doc/index.html), e.g. JAR files would go in `resources/catalina-base/lib`.
 
 ### Putting it all together to build a custom image
 
