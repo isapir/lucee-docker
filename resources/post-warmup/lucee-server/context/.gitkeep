@@ -1,0 +1,2 @@
+This directory can be used to overwrite lucee-server config files after warmup, e.g.
+    lucee-server.xml

@@ -1,1 +1,1 @@
-This directory can be used for Server.cfc with onServerStart(reload)
+This directory can be used for Server.cfc with the function onServerStart(reload)
