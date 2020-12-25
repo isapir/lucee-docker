@@ -89,3 +89,5 @@ RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; the
         && catalina.sh stop ; \
     fi
 
+# copy additional lucee-server and lucee-web after the warmup completes
+COPY resources/post-warmup ${CATALINA_BASE}
