@@ -4,7 +4,7 @@
 #  if passing LUCEE_EXTENSIONS, the value has to be in double quotes
 #
 #  docker image build \
-#    --build-arg LUCEE_VERSION=5.3.8.129-SNAPSHOT \
+#    --build-arg LUCEE_VERSION=5.3.8.133-SNAPSHOT \
 #    --build-arg LUCEE_ADMIN_PASSWORD=changeit \
 #    --build-arg LUCEE_EXTENSIONS="3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket" \
 #    -t isapir/lucee-538 .
@@ -44,10 +44,11 @@ ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 # Lucee server directory
 ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
 
+ENV TARGET_ENV DEV
+
 # displays the OS version and Lucee Server path
 # calls makebase.sh and downloads Lucee if the version is not set to CUSTOM 
 RUN cat /etc/os-release \
-    && echo LUCEE_SERVER=${LUCEE_SERVER} \
     && $CATALINA_HOME/bin/makebase.sh $CATALINA_BASE \
     &&  if [ "$LUCEE_VERSION" != "CUSTOM" ] ; then \
             echo Downloading Lucee ${LUCEE_VERSION}... \
@@ -56,9 +57,6 @@ RUN cat /etc/os-release \
 
 # copy the files from resources/catalina_base to the image
 COPY resources/catalina-base ${CATALINA_BASE}
-
-# copy custom Lucee server files, e.g. extensions from resources/lucee-server/deploy 
-COPY resources/lucee-server ${LUCEE_SERVER}
 
 # copy the files from app to the image
 COPY app ${CATALINA_BASE}/webapps/ROOT
@@ -90,4 +88,4 @@ RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; the
     fi
 
 # copy additional lucee-server and lucee-web after the warmup completes
-COPY resources/post-warmup ${CATALINA_BASE}
+COPY resources/target-envs/${TARGET_ENV} ${CATALINA_BASE}
