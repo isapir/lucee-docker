@@ -1,2 +1,3 @@
-The contents of the directory speicified by the TARGET_ENV variable are copied to ${CATALINA_BASE} 
-after the Warmup completes.  Files from the Warmup stage with the same names will be overwritten.
+The contents of the directory speicified by the $TARGET_ENV variable (default DEV) are copied to 
+${CATALINA_BASE} after the Warmup completes.  Files from the Warmup stage with the same names will 
+be overwritten.

@@ -1,6 +1,7 @@
 ## BUILD: 
 #
 #  if passing LUCEE_VERSION, it must include modifier, e.g. -SNAPSHOT, -RC, if there is one
+#     you can also set the value to CUSTOM and place a Lucee JAR file in resources/catalina-base/lib
 #  if passing LUCEE_EXTENSIONS, the value has to be in double quotes
 #
 #  docker image build \
@@ -18,6 +19,7 @@
 #  docker container run -d --rm -p 8080:8080 --name lucee-8080 \
 #    -v $WEBROOT:/srv/www/webapps/ROOT \
 #    -e LUCEE_PRESERVE_CASE=true \
+#    -e CATALINA_OPTS="-Xmx4g"
 #    isapir/lucee-538
 
 FROM tomcat:9-jdk11
@@ -44,7 +46,8 @@ ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 # Lucee server directory
 ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
 
-ENV TARGET_ENV DEV
+ARG TARGET_ENV=DEV
+ENV TARGET_ENV ${TARGET_ENV}
 
 # displays the OS version and Lucee Server path
 # calls makebase.sh and downloads Lucee if the version is not set to CUSTOM 
