@@ -17,7 +17,7 @@
 #  WEBROOT=/webroot
 #
 #  docker container run -d --rm -p 8080:8080 --name lucee-8080 \
-#    -v $WEBROOT:/srv/www/webapps/ROOT \
+#    -v $WEBROOT:${BASE_DIR}/webapps/ROOT \
 #    -e LUCEE_PRESERVE_CASE=true \
 #    -e CATALINA_OPTS="-Xmx4g"
 #    isapir/lucee-538
@@ -37,11 +37,13 @@ ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 ARG CATALINA_OPTS=
 ENV CATALINA_OPTS ${CATALINA_OPTS}
 
+ENV BASE_DIR /srv/www
+
 # Map a host directory for web app, which must have a webroot subdirectory, with
-#   -v <host-directory-app>:/srv/www/app
-ENV CATALINA_BASE /srv/www/catalina-base
+#   -v <host-directory-app>:${BASE_DIR}/app
+ENV CATALINA_BASE ${BASE_DIR}/catalina-base
 ENV CATALINA_HOME /usr/local/tomcat
-ENV WEBAPP_BASE /srv/www/app
+ENV WEBAPP_BASE ${BASE_DIR}/app
 ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 
 # Lucee server directory
@@ -77,7 +79,7 @@ RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
 # remove admin password from ENV
 ENV LUCEE_ADMIN_PASSWORD=
 
-WORKDIR ${CATALINA_BASE}
+WORKDIR ${BASE_DIR}
 
 RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
