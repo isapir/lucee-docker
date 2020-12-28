@@ -1,4 +1,6 @@
 
+CATALINA_OPTS="${CATALINA_OPTS} -XshowSettings:vm"
+
 CATALINA_OPTS="${CATALINA_OPTS} -Djava.security.egd=file:/dev/./urandom"
 CATALINA_OPTS="${CATALINA_OPTS} -Dorg.apache.catalina.startup.ContextConfig.jarsToSkip=*"
 CATALINA_OPTS="${CATALINA_OPTS} -Dorg.apache.catalina.startup.TldConfig.jarsToSkip=*"
@@ -10,4 +12,4 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.preserve.case=true"
 
 # set Lucee config dirs to /srv/www/lucee-server and /srv/www/lucee-web
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.server.dir=${CATALINA_BASE}"
-CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=/srv/www/lucee-web"
+CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=${CATALINA_BASE}/lucee-web"

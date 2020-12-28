@@ -37,10 +37,11 @@ ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 ARG CATALINA_OPTS=
 ENV CATALINA_OPTS ${CATALINA_OPTS}
 
-# Map a host directory for web root with
-#   -v <host-web-app-directory>:/srv/www/webapps/ROOT
-ENV CATALINA_BASE /srv/www
+# Map a host directory for web app, which must have a webroot subdirectory, with
+#   -v <host-directory-app>:/srv/www/app
+ENV CATALINA_BASE /srv/www/catalina-base
 ENV CATALINA_HOME /usr/local/tomcat
+ENV WEBAPP_BASE /srv/www/app
 ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 
 # Lucee server directory
@@ -61,8 +62,8 @@ RUN cat /etc/os-release \
 # copy the files from resources/catalina_base to the image
 COPY resources/catalina-base ${CATALINA_BASE}
 
-# copy the files from app to the image
-COPY app ${CATALINA_BASE}/webapps/ROOT
+# copy the files from app, including the required subdirectory webroot, to the image
+COPY app ${WEBAPP_BASE}
 
 # create password.txt file if password is set
 ARG LUCEE_ADMIN_PASSWORD=

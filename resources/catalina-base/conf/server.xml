@@ -146,13 +146,9 @@
       </Realm>
 
       <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
+            unpackWARs="false" autoDeploy="false">
 
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
+        <Context path="" docBase="/srv/www/app/webroot" />
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
