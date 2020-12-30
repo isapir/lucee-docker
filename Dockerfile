@@ -1,4 +1,5 @@
-## BUILD: 
+### 
+## Build: 
 #
 #  if passing LUCEE_VERSION, it must include modifier, e.g. -SNAPSHOT, -RC, if there is one
 #     you can also set the value to CUSTOM and place a Lucee JAR file in resources/catalina-base/lib
@@ -11,8 +12,9 @@
 #    -t isapir/lucee-538 .
 #
 #  docker push isapir/lucee-538
-
-## RUN:
+#
+### 
+## Run:
 #
 #  WEBROOT=/webroot
 #
@@ -21,20 +23,34 @@
 #    -e LUCEE_PRESERVE_CASE=true \
 #    -e CATALINA_OPTS="-Xmx4g"
 #    isapir/lucee-538
+#
+###
+## Project home: https://github.com/isapir/lucee-docker
+#
 
-FROM tomcat:9-jdk11
+FROM tomcat:9-jdk11 AS Lucee
+
 
 # Set default LUCEE_VERSION
 #   Override at build time with --build-arg LUCEE_VERSION=5.2.9.38-SNAPSHOT
 ARG LUCEE_VERSION=5.3.7.47
-ENV LUCEE_VERSION=${LUCEE_VERSION}
 
-# Install optional Lucee extensions in the comma separated format {extension-id};name=X;label=XY;version=m.n
+# Allow to specify the Lucee Admin Password at build time with --build-arg LUCEE_ADMIN_PASSWORD=changeit
+ARG LUCEE_ADMIN_PASSWORD=
+
+# Install optional Lucee extensions in the comma separated format {extension-uuid};name=X;label=XY;version=m.n
 #   e.g. "3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket"
 ARG LUCEE_EXTENSIONS=
-ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 
+# Pass JVM options when Tomcat starts, e.g. --build-arg CATALINA_OPTS="-Xmx2g"
 ARG CATALINA_OPTS=
+
+# Set Target Env for post warmup file copy, default is DEV - files will be copied from resources/target-envs/DEV
+ARG TARGET_ENV=DEV
+
+
+ENV LUCEE_VERSION=${LUCEE_VERSION}
+ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 ENV CATALINA_OPTS ${CATALINA_OPTS}
 
 ENV BASE_DIR /srv/www
@@ -49,7 +65,6 @@ ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
 # Lucee server directory
 ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
 
-ARG TARGET_ENV=DEV
 ENV TARGET_ENV ${TARGET_ENV}
 
 # displays the OS version and Lucee Server path
@@ -68,7 +83,6 @@ COPY resources/catalina-base ${CATALINA_BASE}
 COPY app ${WEBAPP_BASE}
 
 # create password.txt file if password is set
-ARG LUCEE_ADMIN_PASSWORD=
 ENV LUCEE_ADMIN_PASSWORD=${LUCEE_ADMIN_PASSWORD}
 
 RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
