@@ -13,3 +13,17 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.preserve.case=true"
 # set Lucee config dirs to /srv/www/lucee-server and /srv/www/lucee-web
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.server.dir=${CATALINA_BASE}"
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=${CATALINA_BASE}/lucee-web"
+
+
+# if file /srv/www/catalina-base/bin/env.sh exists then include it
+ENV_INCLUDE_FILE=/srv/www/catalina-base/bin/env.sh
+if [ -f $ENV_INCLUDE_FILE ]; then
+    # set default to export variables
+    set -a
+
+    echo "Including file $ENV_INCLUDE_FILE"
+    . $ENV_INCLUDE_FILE
+
+    # unset default to export variables
+    set +a
+fi
