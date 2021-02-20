@@ -59,6 +59,8 @@ Tip: You can add supporting files and subdirectories to the `app` directory, so 
 
 8) Directory `resources/target-envs/${TARGET_ENV}` is copied into `$CATALINA_BASE` in the image.  This allows to set up different configurations for different target environments, e.g. DEV, STAGING, PROD, etc.
 
+9) If file `catalina-base/bin/env.sh` exists it is included from `catalina-base/bin/setenv.sh` when Tomcat starts. 
+
 ## Build
 
 The minimum you have to do in order to build a Docker image is to switch to the project directory and run the following
