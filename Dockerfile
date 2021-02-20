@@ -33,7 +33,7 @@ FROM tomcat:9-jdk11 AS Lucee
 
 # Set default LUCEE_VERSION
 #   Override at build time with --build-arg LUCEE_VERSION=5.2.9.38-SNAPSHOT
-ARG LUCEE_VERSION=5.3.7.47
+ARG LUCEE_VERSION=5.3.8.139-RC
 
 # Allow to specify the Lucee Admin Password at build time with --build-arg LUCEE_ADMIN_PASSWORD=changeit
 ARG LUCEE_ADMIN_PASSWORD=

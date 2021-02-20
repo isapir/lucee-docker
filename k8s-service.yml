@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lucee-app
+  name: lucee-depl
 spec:
   replicas: 3
   selector:
@@ -16,7 +16,7 @@ spec:
         app: lucee-app
     spec:
       containers:
-      - image: isapir/lucee-538-pgjdbc
+      - image: isapir/lucee-538
         name: lucee-app
 ---
 ##  Service
@@ -25,6 +25,7 @@ kind: Service
 metadata:
   name: lucee-svc
 spec:
+  type: LoadBalancer
   selector:
     app: lucee-app
   ports:

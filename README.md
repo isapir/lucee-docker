@@ -1,5 +1,66 @@
 # Build Custom Lucee Docker Images
 
+This project allows to build custom Lucee Docker Images based on well known directory structures and configurations of Apache Tomcat and Lucee.  
+
+The build process creates an image with a stage name of "Lucee", which can be used as a standalone image, or to create more complex multi-stage builds.  
+
+The build process creates a Stage Build named "Lucee", using the optional Build time args:
+
+    - LUCEE_VERSION
+    - LUCEE_ADMIN_PASSWORD
+    - LUCEE_EXTENSIONS
+    - CATALINA_OPTS
+    - TARGET_ENV
+
+1) Start from [Tomcat 9 with Java 11](https://hub.docker.com/_/tomcat).  The following paths are used inside the image:
+
+```
+- CATALINA_HOME: /usr/local/tomcat
+- CATALINA_BASE: /srv/www/catalina-base
+- LUCEE_SERVER : /srv/www/catalina-base/lucee-server
+- LUCEE_WEB    : /srv/www/catalina-base/lucee-web
+- BASE_DIR     : /srv/www
+- WEBAPP_BASE  : /srv/www/app
+- WEBAPP_ROOT  : /srv/www/app/webroot
+```
+
+2) The Lucee JAR version `$LUCEE_VERSION` is downloaded from release.lucee.org and saved to the `catalina-base/lib` directory.  
+
+Tip: You may add other required JAR files to `catalina-base/lib` as it is added to the "common" Class Loader, so they will be visible to both Tomcat and Lucee.
+
+Tip: you can use a custom Lucee build by saving the JAR file to `catalina-base/lib` and setting `$LUCEE_VERSION` to "CUSTOM".
+
+3) The contents of `resources/catalina-base` are copied over to `$CATALINA_BASE` in the image, setting defaults and allowing you to add/modify configurations and files as needed.  By default that results in the following directory structure:
+
+```
+    catalina-base
+    ├── bin
+    │   └── setenv.sh
+    ├── conf
+    │   ├── server.xml
+    │   └── web.xml
+    ├── lib
+    │   └── lucee-external-agent.jar
+    ├── lucee-server
+    │   ├── context
+    │   └── deploy
+    └── lucee-web
+```
+
+4) The contents of the `app` directory are copied over to `$WEBAPP_BASE`.  The Web Root is expected to be in `app/webroot/`.
+
+Tip: You can add supporting files and subdirectories to the `app` directory, so that they can be utilized by the application without being exposed to the public web.
+
+5) If `$LUCEE_ADMIN_PASSWORD` is set then a password file is created in the well known Lucee path.
+
+6) The `$LUCEE_ADMIN_PASSWORD` is reset so that it is not leaked into the environment of the Docker image.
+
+7) The working directory is changed to `$BASE_DIR`.
+
+8) Tomcat is launched with the environment variables `$LUCEE_ENABLE_WARMUP` and `$LUCEE_EXTENSIONS`, so that Lucee does an initial run, creates all required directories and files, and downloads extensions if specified.  Once the warmup completes, Tomcat shuts down.
+
+9) Directory `resources/target-envs/${TARGET_ENV}` is copied into `$CATALINA_BASE` in the image.  This allows to set up different configurations for different target environments, e.g. DEV, STAGING, PROD, etc.
+
 ## Build
 
 The minimum you have to do in order to build a Docker image is to switch to the project directory and run the following
