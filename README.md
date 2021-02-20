@@ -51,15 +51,13 @@ Tip: you can use a custom Lucee build by saving the JAR file to `catalina-base/l
 
 Tip: You can add supporting files and subdirectories to the `app` directory, so that they can be utilized by the application without being exposed to the public web.
 
-5) If `$LUCEE_ADMIN_PASSWORD` is set then a password file is created in the well known Lucee path.
+5) If `$LUCEE_ADMIN_PASSWORD` is set then a password file is created in the well known Lucee path.  The `$LUCEE_ADMIN_PASSWORD` is then reset so that it is not leaked into the environment of the Docker image.
 
-6) The `$LUCEE_ADMIN_PASSWORD` is reset so that it is not leaked into the environment of the Docker image.
+6) The working directory is changed to `$BASE_DIR`.
 
-7) The working directory is changed to `$BASE_DIR`.
+7) Tomcat is launched with the environment variables `$LUCEE_ENABLE_WARMUP` and `$LUCEE_EXTENSIONS`, so that Lucee does an initial run, creates all required directories and files, and downloads extensions if specified.  Once the warmup completes, Tomcat shuts down.
 
-8) Tomcat is launched with the environment variables `$LUCEE_ENABLE_WARMUP` and `$LUCEE_EXTENSIONS`, so that Lucee does an initial run, creates all required directories and files, and downloads extensions if specified.  Once the warmup completes, Tomcat shuts down.
-
-9) Directory `resources/target-envs/${TARGET_ENV}` is copied into `$CATALINA_BASE` in the image.  This allows to set up different configurations for different target environments, e.g. DEV, STAGING, PROD, etc.
+8) Directory `resources/target-envs/${TARGET_ENV}` is copied into `$CATALINA_BASE` in the image.  This allows to set up different configurations for different target environments, e.g. DEV, STAGING, PROD, etc.
 
 ## Build
 
