@@ -15,8 +15,8 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.server.dir=${CATALINA_BASE}"
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=${CATALINA_BASE}/lucee-web"
 
 
-# if file /srv/www/catalina-base/bin/env.sh exists then include it
-ENV_INCLUDE_FILE=/srv/www/catalina-base/bin/env.sh
+# if file /srv/www/catalina-base/bin/addenv.sh exists then include it
+ENV_INCLUDE_FILE=/srv/www/catalina-base/bin/addenv.sh
 if [ -f $ENV_INCLUDE_FILE ]; then
     # set default to export variables
     set -a
