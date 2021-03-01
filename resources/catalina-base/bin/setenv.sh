@@ -8,6 +8,9 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dtomcat.util.scan.StandardJarScanFilter.jarsToS
 
 CATALINA_OPTS="${CATALINA_OPTS} -javaagent:${CATALINA_BASE}/lib/lucee-external-agent.jar"
 
+# set Tomcat webroot via server.xml Service/Engine/Host/Context#docBase
+CATALINA_OPTS="${CATALINA_OPTS} -Dserver.webroot=${SERVER_WEBROOT}"
+
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.preserve.case=true"
 
 # set Lucee config dirs to /srv/www/lucee-server and /srv/www/lucee-web

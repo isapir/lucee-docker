@@ -16,10 +16,10 @@
 ### 
 ## Run:
 #
-#  WEBROOT=/webroot
+#  HOST_WEBROOT=/work/webroot
 #
 #  docker container run -d --rm -p 8080:8080 --name lucee-8080 \
-#    -v $WEBROOT:${BASE_DIR}/webapps/ROOT \
+#    -v $HOST_WEBROOT:/srv/www/app/webroot \
 #    -e LUCEE_PRESERVE_CASE=true \
 #    -e CATALINA_OPTS="-Xmx4g"
 #    isapir/lucee-538
@@ -45,6 +45,9 @@ ARG LUCEE_EXTENSIONS=
 # Pass JVM options when Tomcat starts, e.g. --build-arg CATALINA_OPTS="-Xmx2g"
 ARG CATALINA_OPTS=
 
+# Allow to set a custom webroot directory
+ARG SERVER_WEBROOT=/srv/www/app/webroot
+
 # Set Target Env for post warmup file copy, default is DEV - files will be copied from resources/target-envs/DEV
 ARG TARGET_ENV=DEV
 
@@ -52,6 +55,7 @@ ARG TARGET_ENV=DEV
 ENV LUCEE_VERSION=${LUCEE_VERSION}
 ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 ENV CATALINA_OPTS ${CATALINA_OPTS}
+ENV SERVER_WEBROOT ${SERVER_WEBROOT}
 
 ENV BASE_DIR /srv/www
 
