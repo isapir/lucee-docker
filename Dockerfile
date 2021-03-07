@@ -28,7 +28,10 @@
 ## Project home: https://github.com/isapir/lucee-docker
 #
 
-FROM tomcat:9-jdk11 AS Lucee
+# Allow to specify the base Tomcat image (must have curl)
+ARG TOMCAT_IMAGE_TAG=9-jdk11
+
+FROM tomcat:$TOMCAT_IMAGE_TAG AS Lucee
 
 
 # Set default LUCEE_VERSION
