@@ -90,15 +90,10 @@ COPY resources/catalina-base ${CATALINA_BASE}
 COPY app ${WEBAPP_BASE}
 
 # create password.txt file if password is set
-ENV LUCEE_ADMIN_PASSWORD=${LUCEE_ADMIN_PASSWORD}
-
 RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
         mkdir -p "${LUCEE_SERVER}/context" \ 
         && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER}/context/password.txt" ; \
     fi
-
-# remove admin password from ENV
-ENV LUCEE_ADMIN_PASSWORD=
 
 WORKDIR ${BASE_DIR}
 
