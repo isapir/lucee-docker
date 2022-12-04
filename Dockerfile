@@ -98,6 +98,7 @@ WORKDIR ${BASE_DIR}
 
 RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
+        && export CATALINA_OPTS="-Dlucee.web.dir=/srv/www/catalina-base/lucee-web-warmup" \
         && export LUCEE_ENABLE_WARMUP=true \
         && export LUCEE_EXTENSIONS \
         && catalina.sh run ; \

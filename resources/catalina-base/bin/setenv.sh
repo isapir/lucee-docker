@@ -13,9 +13,25 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dserver.webroot=${SERVER_WEBROOT}"
 
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.preserve.case=true"
 
-# set Lucee config dirs to /srv/www/lucee-server and /srv/www/lucee-web
-CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.server.dir=${CATALINA_BASE}"
-CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=${CATALINA_BASE}/lucee-web"
+# set Lucee lucee.server.dir config to /srv/www/lucee-server
+if [[ ${CATALINA_OPTS} != *"lucee.server.dir"* ]]; then
+
+    echo "lucee.server.dir is not set in CATALINA_OPTS"
+    CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.server.dir=${CATALINA_BASE}"
+else
+
+    echo "lucee.server.dir is set in CATALINA_OPTS"
+fi
+
+# set Lucee lucee.web.dir config to /srv/www/lucee-web only if it does not exist
+if [[ ${CATALINA_OPTS} != *"lucee.web.dir"* ]]; then
+
+    echo "lucee.web.dir is not set in CATALINA_OPTS"
+    CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=${CATALINA_BASE}/lucee-web"
+else
+
+    echo "lucee.web.dir is set in CATALINA_OPTS"
+fi
 
 
 # if file /srv/www/catalina-base/bin/addenv.sh exists then include it
