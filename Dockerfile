@@ -98,7 +98,6 @@ WORKDIR ${BASE_DIR}
 
 RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
-        && export CATALINA_OPTS="-Dlucee.web.dir=/srv/www/catalina-base/lucee-web-warmup" \
         && export LUCEE_ENABLE_WARMUP=true \
         && export LUCEE_EXTENSIONS \
         && catalina.sh run ; \
@@ -110,4 +109,6 @@ RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ 
     fi
 
 # copy additional lucee-server and lucee-web after the warmup completes
-COPY resources/target-envs/${TARGET_ENV} ${CATALINA_BASE}
+#   for some reason this creates a Web Context at /srv/www/catalina-base/lucee-server/context which
+#   creates a conflict of two different web context with the same config dir so commenting out for now
+# COPY resources/target-envs/${TARGET_ENV} ${CATALINA_BASE}
