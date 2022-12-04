@@ -36,7 +36,7 @@ FROM tomcat:$TOMCAT_IMAGE_TAG AS Lucee
 
 # Set default LUCEE_VERSION
 #   Override at build time with --build-arg LUCEE_VERSION=5.2.9.38-SNAPSHOT
-ARG LUCEE_VERSION=5.3.8.206
+ARG LUCEE_VERSION=5.3.10.97
 
 # Allow to specify the Lucee Admin Password at build time with --build-arg LUCEE_ADMIN_PASSWORD=changeit
 ARG LUCEE_ADMIN_PASSWORD=
@@ -96,7 +96,7 @@ RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
 
 WORKDIR ${BASE_DIR}
 
-RUN if [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
+RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
         && export LUCEE_ENABLE_WARMUP=true \
         && export LUCEE_EXTENSIONS \
