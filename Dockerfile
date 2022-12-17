@@ -54,6 +54,9 @@ ARG SERVER_WEBROOT=/srv/www/app/webroot
 # Set Target Env for post warmup file copy, default is DEV - files will be copied from resources/target-envs/DEV
 ARG TARGET_ENV=DEV
 
+# Pass a host user Group ID, e.g. --build-arg GROUP_ID=$(id -u) to make file sharing easy
+ARG GROUP_ID=0
+
 
 ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
 ENV CATALINA_OPTS=${CATALINA_OPTS}
@@ -73,14 +76,17 @@ ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
 
 ENV TARGET_ENV ${TARGET_ENV}
 
+ENV GROUP_ID ${GROUP_ID}
+
+
 # displays the OS version and Lucee Server path
 # calls makebase.sh and downloads Lucee if the version is not set to CUSTOM 
 RUN cat /etc/os-release \
-    && $CATALINA_HOME/bin/makebase.sh $CATALINA_BASE \
+    &&  $CATALINA_HOME/bin/makebase.sh $CATALINA_BASE \
     &&  if [ "$LUCEE_VERSION" != "CUSTOM" ] ; then \
             echo Downloading Lucee ${LUCEE_VERSION}... \
-            && curl -L -o "${CATALINA_BASE}/lib/${LUCEE_VERSION}.jar" "${LUCEE_DOWNLOAD}${LUCEE_VERSION}" ; \
-        fi
+            && curl -L -o "${CATALINA_BASE}/lib/${LUCEE_VERSION}.jar" "${LUCEE_DOWNLOAD}${LUCEE_VERSION}" \
+        ; fi
 
 # copy the files from resources/catalina_base to the image
 COPY resources/catalina-base ${CATALINA_BASE}
@@ -91,8 +97,8 @@ COPY app ${WEBAPP_BASE}
 # create password.txt file if password is set
 RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
         mkdir -p "${LUCEE_SERVER}/context" \ 
-        && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER}/context/password.txt" ; \
-    fi
+        && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER}/context/password.txt" \
+    ; fi
 
 WORKDIR ${BASE_DIR}
 
@@ -100,13 +106,27 @@ RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ 
         echo "Enabled LUCEE_ENABLE_WARMUP" \
         && export LUCEE_ENABLE_WARMUP=true \
         && export LUCEE_EXTENSIONS \
-        && catalina.sh run ; \
-    else \
+        && catalina.sh run \
+    ; else \
         echo "Start Tomcat and wait 20 seconds to shut down" \
         && catalina.sh start \
         && sleep 20 \
-        && catalina.sh stop ; \
-    fi
+        && catalina.sh stop \
+    ; fi
+
+
+RUN if [ "${GROUP_ID}" \> "0" ] ; then \
+        DIRS_PERMISSION="/srv/www" \
+        && useradd --uid ${GROUP_ID} --user-group --shell /bin/bash lucee \
+        && chown :${GROUP_ID} -R ${DIRS_PERMISSION} \
+        && chmod -R g+srw ${DIRS_PERMISSION} \
+        && echo "Set permissions for group ${GROUP_ID} to ${DIRS_PERMISSION}" \
+    ; fi
+
+
+## run as user lucee, for terminal access add `-u root` to docker container exec
+USER lucee
+
 
 # copy additional lucee-server and lucee-web after the warmup completes
 #   for some reason this creates a Web Context at /srv/www/catalina-base/lucee-server/context which
