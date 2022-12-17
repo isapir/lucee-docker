@@ -115,7 +115,6 @@ RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ 
         && catalina.sh stop \
     ; fi
 
-
 RUN if [ "${GROUP_ID}" \> "0" ] ; then \
         DIRS_PERMISSION="/srv/www" \
         && useradd --uid ${GROUP_ID} --user-group --shell /bin/bash lucee \
@@ -126,7 +125,7 @@ RUN if [ "${GROUP_ID}" \> "0" ] ; then \
 
 
 ## run as user lucee, for terminal access add `-u root` to docker container exec
-USER lucee
+USER ${GROUP_ID}
 
 
 # copy additional lucee-server and lucee-web after the warmup completes
