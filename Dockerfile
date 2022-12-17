@@ -9,6 +9,7 @@
 #    --build-arg LUCEE_VERSION=5.3.8.133-SNAPSHOT \
 #    --build-arg LUCEE_ADMIN_PASSWORD=changeit \
 #    --build-arg LUCEE_EXTENSIONS="3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket" \
+#    --build-arg GROUP_ID=$(id -g) \
 #    -t isapir/lucee-538 .
 #
 #  docker push isapir/lucee-538
@@ -54,7 +55,7 @@ ARG SERVER_WEBROOT=/srv/www/app/webroot
 # Set Target Env for post warmup file copy, default is DEV - files will be copied from resources/target-envs/DEV
 ARG TARGET_ENV=DEV
 
-# Pass a host user Group ID, e.g. --build-arg GROUP_ID=$(id -u) to make file sharing easy
+# Pass a host user Group ID, e.g. --build-arg GROUP_ID=$(id -g) to make file sharing easy
 ARG GROUP_ID=0
 
 
