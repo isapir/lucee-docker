@@ -59,25 +59,25 @@ ARG TARGET_ENV=DEV
 ARG GROUP_ID=0
 
 
-ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
-ENV CATALINA_OPTS=${CATALINA_OPTS}
-ENV SERVER_WEBROOT=${SERVER_WEBROOT}
+ENV LUCEE_EXTENSIONS ${LUCEE_EXTENSIONS}
+ENV CATALINA_OPTS    ${CATALINA_OPTS}
+ENV SERVER_WEBROOT   ${SERVER_WEBROOT}
 
-ENV BASE_DIR /srv/www
+ENV BASE_DIR         /srv/www
 
 # Map a host directory for web app, which must have a webroot subdirectory, with
 #   -v <host-directory-app>:${BASE_DIR}/app
-ENV CATALINA_BASE ${BASE_DIR}/catalina-base
-ENV CATALINA_HOME /usr/local/tomcat
-ENV WEBAPP_BASE ${BASE_DIR}/app
-ENV LUCEE_DOWNLOAD http://release.lucee.org/rest/update/provider/loader/
+ENV CATALINA_HOME    /usr/local/tomcat
+ENV CATALINA_BASE    ${BASE_DIR}/catalina-base
+ENV WEBAPP_BASE      ${BASE_DIR}/app
+ENV LUCEE_DOWNLOAD   http://release.lucee.org/rest/update/provider/loader/
 
 # Lucee server directory
-ENV LUCEE_SERVER ${CATALINA_BASE}/lucee-server
+ENV LUCEE_SERVER     ${CATALINA_BASE}/lucee-server
 
-ENV TARGET_ENV ${TARGET_ENV}
+ENV TARGET_ENV       ${TARGET_ENV}
 
-ENV GROUP_ID ${GROUP_ID}
+ENV GROUP_ID         ${GROUP_ID}
 
 
 # displays the OS version and Lucee Server path
@@ -99,6 +99,8 @@ COPY app ${WEBAPP_BASE}
 RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
         mkdir -p "${LUCEE_SERVER}/context" \ 
         && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER}/context/password.txt" \
+    ; else \
+        echo "Set Lucee Admin at ${LUCEE_SERVER}/context/password.txt" \
     ; fi
 
 WORKDIR ${BASE_DIR}
@@ -124,7 +126,7 @@ RUN if [ "${GROUP_ID}" \> "0" ] ; then \
     ; fi
 
 
-## run as user lucee, for terminal access add `-u root` to docker container exec
+## run as user lucee, for terminal access with docker container exec add `-u root`
 USER ${GROUP_ID}
 
 
