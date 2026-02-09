@@ -6,32 +6,10 @@ CATALINA_OPTS="${CATALINA_OPTS} -Dorg.apache.catalina.startup.ContextConfig.jars
 CATALINA_OPTS="${CATALINA_OPTS} -Dorg.apache.catalina.startup.TldConfig.jarsToSkip=*"
 CATALINA_OPTS="${CATALINA_OPTS} -Dtomcat.util.scan.StandardJarScanFilter.jarsToSkip=*"
 
-CATALINA_OPTS="${CATALINA_OPTS} -javaagent:${CATALINA_BASE}/lib/lucee-external-agent.jar"
-
 # set Tomcat webroot via server.xml Service/Engine/Host/Context#docBase
-CATALINA_OPTS="${CATALINA_OPTS} -Dserver.webroot=${SERVER_WEBROOT}"
+CATALINA_OPTS="${CATALINA_OPTS} -Dtomcat.server.webroot=${SERVER_WEBROOT}"
 
 CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.preserve.case=true"
-
-# set Lucee lucee.server.dir config to /srv/www/lucee-server
-if [[ ${CATALINA_OPTS} != *"lucee.server.dir"* ]]; then
-
-    echo "lucee.server.dir is not set in CATALINA_OPTS"
-    CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.server.dir=${CATALINA_BASE}"
-else
-
-    echo "lucee.server.dir is set in CATALINA_OPTS"
-fi
-
-# set Lucee lucee.web.dir config to /srv/www/lucee-web only if it does not exist
-if [[ ${CATALINA_OPTS} != *"lucee.web.dir"* ]]; then
-
-    echo "lucee.web.dir is not set in CATALINA_OPTS"
-    CATALINA_OPTS="${CATALINA_OPTS} -Dlucee.web.dir=${CATALINA_BASE}/lucee-web"
-else
-
-    echo "lucee.web.dir is set in CATALINA_OPTS"
-fi
 
 
 # if file /srv/www/catalina-base/bin/addenv.sh exists then include it

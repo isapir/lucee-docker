@@ -1,2 +1,0 @@
-Lucee Server config files can be added in this directory to be available during warmup and later, e.g.
-    lucee-server.xml

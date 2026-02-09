@@ -1,8 +1,0 @@
-The contents of this directory are copied to /srv/www/catalina-base before warmup and follow the 
-Catalina Base format and the lucee-server and lucee-web directories, e.g. 
-
-    bin
-    conf
-    lib
-    lucee-server
-    lucee-web

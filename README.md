@@ -12,14 +12,13 @@ The build process creates a Stage Build named "Lucee", using the optional Build 
     - CATALINA_OPTS
     - TARGET_ENV
 
-1) Start from [Tomcat 9 with Java 11](https://hub.docker.com/_/tomcat).  The following paths are used inside the image:
+1) Start from [Tomcat 9 with Java 21](https://hub.docker.com/_/tomcat).  The following paths are used inside the image:
 
 ```
 - CATALINA_HOME: /usr/local/tomcat
-- CATALINA_BASE: /srv/www/catalina-base
-- LUCEE_SERVER : /srv/www/catalina-base/lucee-server
-- LUCEE_WEB    : /srv/www/catalina-base/lucee-web
-- BASE_DIR     : /srv/www
+- CATALINA_BASE: /srv/www/app/config/catalina-base
+- LUCEE_SERVER : /srv/www/app/config/base/lucee-server
+- BASE_DIR     : /srv/www/app
 - WEBAPP_BASE  : /srv/www/app
 - WEBAPP_ROOT  : /srv/www/app/webroot
 ```
@@ -30,21 +29,21 @@ Tip: You may add other required JAR files to `catalina-base/lib` as it is added 
 
 Tip: you can use a custom Lucee build by saving the JAR file to `catalina-base/lib` and setting `$LUCEE_VERSION` to "CUSTOM".
 
-3) The contents of `resources/catalina-base` are copied over to `$CATALINA_BASE` in the image, setting defaults and allowing you to add/modify configurations and files as needed.  By default that results in the following directory structure:
+3) The contents of `resources/config/catalina-base` are copied over to `$CATALINA_BASE` in the image, setting defaults and allowing you to add/modify configurations and files as needed.  By default that results in the following directory structure:
 
 ```
-    catalina-base
-    ├── bin
-    │   └── setenv.sh
-    ├── conf
-    │   ├── server.xml
-    │   └── web.xml
-    ├── lib
-    │   └── lucee-external-agent.jar
-    ├── lucee-server
-    │   ├── context
-    │   └── deploy
-    └── lucee-web
+    config
+        ├── catalina-base
+        │   ├── bin
+        │   │   └── setenv.sh
+        │   ├── conf
+        │   │   ├── server.xml
+        │   │   └── web.xml
+        │   ├── lib
+        │   │   └── (add JARs here as needed)
+        ├── lucee-server
+        │   ├── context
+        │   └── deploy
 ```
 
 4) The contents of the `app` directory are copied over to `$WEBAPP_BASE`.  The Web Root is expected to be in `app/webroot/`.
@@ -80,7 +79,7 @@ This will set the Lucee Admin password to the value passed
 
 This must be a full version number, including the modifier suffix if one exist, e.g. `-SNAPSHOT`, `-BETA`, `-RC`, etc.  You can see the available versions on the [Lucee Download page](https://download.lucee.org/).
 
-You may also build a CUSTOM version by setting the LUCEE_VERSION environment variable to "CUSTOM" and placing a Lucee JAR file in the `resources/catalina-base/lib/` directory.
+You may also build a CUSTOM version by setting the LUCEE_VERSION environment variable to "CUSTOM" and placing a Lucee JAR file in the `resources/config/catalina-base/lib/` directory.
 
 ### LUCEE_EXTENSIONS
 
@@ -94,7 +93,7 @@ Use CATALINA_OPTS to set Java options and system properties.
 
 You can add your application code to the `app` directory.  All of the files in that directory are for the sake of example only and can be safely deleted.
 
-You can add custom files, e.g. Java JAR files, by saving them to the `resources/catalina-base` directory in the appropriate subdirectory per the [Apache Tomcat documentation](https://tomcat.apache.org/tomcat-9.0-doc/index.html), e.g. JAR files would go in `resources/catalina-base/lib`.
+You can add custom files, e.g. Java JAR files, by saving them to the `resources/config/catalina-base` directory in the appropriate subdirectory per the [Apache Tomcat documentation](https://tomcat.apache.org/tomcat-9.0-doc/index.html), e.g. JAR files would go in `resources/config/catalina-base/lib`.
 
 ### Putting it all together to build a custom image
 

@@ -16,8 +16,8 @@
 			.cont-path   { background: aqua; }
 			.host-path   { background: lawngreen; }
 			table        { border: 1px solid gray; }
-			tr td        { border: 1px solid lightgray; }
-			div.-lucee-dump td.luceeN1 { overflow-wrap: anywhere; }
+			tr td        { border: 1px solid lightgray; padding: 0.25rem 0.5rem; }
+			div.-lucee-dump td.luceeN1 { overflow-wrap: break-word; }
 		</style>
 	</head>
 	<body>
@@ -44,6 +44,18 @@
 			and it is copied into the container at <span class="path cont-path">#getCurrentTemplatePath()#</span>.</p>
 
 		<table>
+			<tr>
+				<td>Lucee</td>
+				<td>#Server.lucee.version#</td>
+			</tr>
+			<tr>
+				<td>Servlet container</td>
+				<td>#Server.servlet.name#</td>
+			</tr>
+			<tr>
+				<td>Java</td>
+				<td>#Server.java.version#</td>
+			</tr>
 			<tr>
 				<td>Server Time</td>
 				<td>#serverTime#</td>
@@ -102,24 +114,19 @@
 			<td>Lucee Server direcotry <sup>*</sup></td>
 			<td><span class="path cont-path">#expandPath("{lucee-server}")#</span></td>
 		</tr>
-		<tr>
-			<td>Web Context Admin UI</td>
-			<td><a href="/lucee/admin/web.cfm">/lucee/admin/web.cfm</a></td>
-		</tr>
-		<tr>
-			<td>Web Context direcotry <sup>*</sup></td>
-			<td><span class="path cont-path">#expandPath("{lucee-web}")#</span></td>
-		</tr>
-		<tr><td>{lucee-config}</td><td>#expandPath("{lucee-config}")#</td></tr>
-        <tr><td>{temp-directory}</td><td>#expandPath("{temp-directory}")#</td></tr>
-        <tr><td>{home-directory}</td><td>#expandPath("{home-directory}")#</td></tr>
-        <tr><td>{web-root-directory}</td><td>#expandPath("{web-root-directory}")#</td></tr>
-        <tr><td>{system-directory}</td><td>#expandPath("{system-directory}")#</td></tr>
-        <tr><td>{web-context-hash}</td><td>#expandPath("{web-context-hash}")#</td></tr>
-        <tr><td>{web-context-label}</td><td>#expandPath("{web-context-label}")#</td></tr>
+		<cfloop array="#[ 
+			'{lucee-config}',
+			'{temp-directory}',
+			'{home-directory}',
+			'{web-root-directory}',
+			'{system-directory}',
+			'{web-context-hash}',
+			'{web-context-label}',
+		]#" item="el">
+			<tr><td>#el#</td><td>#expandPath(el)#</td></tr>
+		</cfloop>
 		<tr><td colspan="2" class="small"><sup>*</sup> Directory paths inside the container</td></tr>
 	</table>
-	<br>
 	<br>
 </cfoutput>
 
@@ -129,7 +136,7 @@
 	"timezoneInfo" : getTimezoneInfo(),
 	"localeInfo"   : getLocaleInfo(),
 	"CGI"          : CGI,
-	"Server"       : Server
+	"Server"       : Server,
 ])>
 
 </div><!--- id=page !--->

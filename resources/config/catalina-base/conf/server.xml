@@ -148,7 +148,7 @@
       <Host name="localhost"  appBase="webapps"
             unpackWARs="false" autoDeploy="false">
 
-        <Context path="" docBase="${server.webroot}" />
+        <Context path="" docBase="${tomcat.server.webroot}" />
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html

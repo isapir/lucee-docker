@@ -30,14 +30,14 @@
 #
 
 # Allow to specify the base Tomcat image (must have curl)
-ARG TOMCAT_IMAGE_TAG=9-jdk11
+ARG TOMCAT_IMAGE_TAG=9-jdk21
 
-FROM tomcat:$TOMCAT_IMAGE_TAG AS Lucee
+FROM tomcat:$TOMCAT_IMAGE_TAG AS lucee
 
 
 # Set default LUCEE_VERSION
 #   Override at build time with --build-arg LUCEE_VERSION=5.2.9.38-SNAPSHOT
-ARG LUCEE_VERSION=5.3.10.97
+ARG LUCEE_VERSION=6.2.5.37-RC
 
 # Allow to specify the Lucee Admin Password at build time with --build-arg LUCEE_ADMIN_PASSWORD=changeit
 ARG LUCEE_ADMIN_PASSWORD=
@@ -59,26 +59,29 @@ ARG TARGET_ENV=DEV
 ARG GROUP_ID=0
 
 
-ENV LUCEE_EXTENSIONS ${LUCEE_EXTENSIONS}
-ENV CATALINA_OPTS    ${CATALINA_OPTS}
-ENV SERVER_WEBROOT   ${SERVER_WEBROOT}
-
-ENV BASE_DIR         /srv/www
+ENV LUCEE_EXTENSIONS=${LUCEE_EXTENSIONS}
+ENV CATALINA_OPTS=${CATALINA_OPTS}
+ENV SERVER_WEBROOT=${SERVER_WEBROOT}
 
 # Map a host directory for web app, which must have a webroot subdirectory, with
-#   -v <host-directory-app>:${BASE_DIR}/app
-ENV CATALINA_HOME    /usr/local/tomcat
-ENV CATALINA_BASE    ${BASE_DIR}/catalina-base
-ENV WEBAPP_BASE      ${BASE_DIR}/app
-ENV LUCEE_DOWNLOAD   http://release.lucee.org/rest/update/provider/loader/
+#   -v <host-directory-app>:${WEBAPP_BASE}/app
+ENV CATALINA_HOME=/usr/local/tomcat
+ENV WEBAPP_BASE=/srv/www/app
+ENV WEBAPP_CONF=${WEBAPP_BASE}/config
 
-# Lucee server directory
-ENV LUCEE_SERVER     ${CATALINA_BASE}/lucee-server
+ENV CATALINA_BASE=${WEBAPP_CONF}/catalina-base
 
-ENV TARGET_ENV       ${TARGET_ENV}
+# Lucee server directory will be created inside this directory; 
+ENV LUCEE_SERVER_PARENT_DIR=${WEBAPP_CONF}
 
-ENV GROUP_ID         ${GROUP_ID}
+# this is a misnomer in Lucee, as the Env variable name actually refers to the parent directory of lucee-server
+ENV LUCEE_SERVER_DIR=${WEBAPP_CONF}
 
+ENV TARGET_ENV=${TARGET_ENV}
+
+ENV GROUP_ID=${GROUP_ID}
+
+ARG LUCEE_DOWNLOAD=http://release.lucee.org/rest/update/provider/loader/
 
 # displays the OS version and Lucee Server path
 # calls makebase.sh and downloads Lucee if the version is not set to CUSTOM 
@@ -90,22 +93,22 @@ RUN cat /etc/os-release \
         ; fi
 
 # copy the files from resources/catalina_base to the image
-COPY resources/catalina-base ${CATALINA_BASE}
+COPY resources/config/catalina-base ${CATALINA_BASE}
 
 # copy the files from app, including the required subdirectory webroot, to the image
 COPY app ${WEBAPP_BASE}
 
 # create password.txt file if password is set
 RUN if [ "$LUCEE_ADMIN_PASSWORD" != "" ] ; then \
-        mkdir -p "${LUCEE_SERVER}/context" \ 
-        && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER}/context/password.txt" \
+        mkdir -p "${LUCEE_SERVER_PARENT_DIR}/lucee-server/context" \ 
+        && echo $LUCEE_ADMIN_PASSWORD > "${LUCEE_SERVER_PARENT_DIR}/lucee-server/context/password.txt" \
     ; else \
-        echo "Set Lucee Admin at ${LUCEE_SERVER}/context/password.txt" \
+        echo "Set Lucee Admin at ${LUCEE_SERVER_PARENT_DIR}/lucee-server/context/password.txt" \
     ; fi
 
-WORKDIR ${BASE_DIR}
+WORKDIR ${WEBAPP_BASE}
 
-RUN if [ "$LUCEE_VERSION" \> "5.3.10" ] || [ "$LUCEE_VERSION" \> "5.3.6" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
+RUN if [ "$LUCEE_VERSION" \> "5.4" ] || [ "$LUCEE_VERSION" == "CUSTOM" ] ; then \
         echo "Enabled LUCEE_ENABLE_WARMUP" \
         && export LUCEE_ENABLE_WARMUP=true \
         && export LUCEE_EXTENSIONS \
