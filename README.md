@@ -105,6 +105,25 @@ The following command should be on one line.  It is broken here to multiple line
         --build-arg LUCEE_VERSION=5.3.7.34-RC     \
         --build-arg LUCEE_EXTENSIONS="3F9DFF32-B555-449D-B0EB5DB723044045;name=WebSocket"
 
+### To build a generic image for Github Container Repository
+
+Build and tag image:
+
+```
+docker image build --build-arg LUCEE_VERSION=6.2.5.37-RC -t ghcr.io/isapir/lucee-6.2:latest --no-cache .
+```
+
+Push to GHCR:
+
+```
+docker image push ghcr.io/isapir/lucee-6.2:latest
+```
+
+Run container:
+```
+docker container run -it --rm --name lucee -p 8080:8080 ghcr.io/isapir/lucee-6.2
+```
+
 ### docker image push
 
 Once you've built the image you can push it to your Docker Hub account (or other repository that you might use).  That is very useful if you want to be able to pull the image from any host machine without having to build it each time.  The command is `docker image push <tag-name>`.  , e.g.:
