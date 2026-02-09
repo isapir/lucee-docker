@@ -126,9 +126,17 @@ docker container run -it --rm --name lucee -p 8080:8080 ghcr.io/isapir/lucee-6.2
 
 ### docker image push
 
-Once you've built the image you can push it to your Docker Hub account (or other repository that you might use).  That is very useful if you want to be able to pull the image from any host machine without having to build it each time.  The command is `docker image push <tag-name>`.  , e.g.:
+Once you've built the image you can push it to your Docker Hub account (or other repository that you might use).  That is very useful if you want to be able to pull the image from any host machine without having to build it each time.  The command is `docker image push [<repository>/]<tag-name>`, with the default repository being `docker.io`, e.g.:
 
-    docker image push isapir/lucee-538
+    docker image push isapir/lucee-6.2:latest
+
+is equivalent to
+
+    docker image push docker.io/isapir/lucee-6.2:latest
+
+To push to another repository, e.g. to Github:
+
+    docker image push ghcr.io/isapir/lucee-6.2:latest
 
 ## docker container run
 
