@@ -37,7 +37,7 @@ FROM tomcat:$TOMCAT_IMAGE_TAG AS lucee
 
 # Set default LUCEE_VERSION
 #   Override at build time with --build-arg LUCEE_VERSION=5.2.9.38-SNAPSHOT
-ARG LUCEE_VERSION=6.2.5.37-RC
+ARG LUCEE_VERSION=6.2.5.48
 
 # Allow to specify the Lucee Admin Password at build time with --build-arg LUCEE_ADMIN_PASSWORD=changeit
 ARG LUCEE_ADMIN_PASSWORD=
